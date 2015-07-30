@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Tetris</title>
+
+<link rel="stylesheet" type="text/css" href="style.css">
+
+
+<style>
+
+
+</style>
+
+</head>
+
+<body>
+
+<div class="game">
+	<div class="tool">
+		<!-- level：<select id="gameLevel">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</select> -->
+		<a id="start" href="#" iconCls="icon-reload" class="available">start</a>
+		<a id="pause" href="#" iconCls="icon-reload">pause</a>
+	</div>
+
+	<div id="main_container">
+
+		<div id="main">
+			<canvas id="map"> 你的浏览器不支持 &lt;canvas&gt;标签，请使用 Chrome 浏览器 或者 FireFox 浏览器</canvas> 
+			<!-- <canvas id="message"> 你的浏览器不支持 &lt;canvas&gt;标签，请使用 Chrome 浏览器 或者 FireFox 浏览器 </canvas> -->
+			<canvas id="tetris"> 你的浏览器不支持 &lt;canvas&gt;标签，请使用 Chrome 浏览器 或者 FireFox 浏览器 </canvas>
+		</div>
+	</div>
+	
+	<div id="game_info">
+			<div class="nextShape">
+				<canvas id="nextShape"> 你的浏览器不支持 &lt;canvas&gt;标签，请使用 Chrome 浏览器 或者 FireFox 浏览器 </canvas>
+			</div>
+		
+			<div id="totalScore">
+				
+				<div>
+					<span class="score_title">level：</span><span id="levelShow"></span>
+					<input type="hidden" id="level" value=0 />
+				</div>
+				<div>
+					<span class="score_title" id="scoreShow_title">score：</span><span id="scoreShow"></span>
+					<input type="hidden" id="score" value=0 />
+				</div>
+				<div>
+					<span class="score_title">lines：</span><span id="linesShow"></span>
+					<input type="hidden" id="lines" value=0 />
+				</div>
+				<div>
+					<span class="score_title">best：</span><span id="bestScore"></span>
+					<input type="hidden" id="bestScore" value=0 />
+				</div>
+				
+				
+			</div>
+		
+	</div>
+
+
+	<div id="message">GAME OVER !</div>
+</div>
+<script type="text/javascript" src="tetris.js"></script>
+</body>
+</html>
