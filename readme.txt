@@ -1,2 +1,1 @@
-1.雏形完成于2012年；
-2.2015年7月20~23日进行代码重写，去掉对其他js库的依赖，用原生javascript实现。
+1. It's a little Web game -- TETRIS which is based on HTML5 and primary javascript.
