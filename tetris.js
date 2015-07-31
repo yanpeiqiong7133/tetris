@@ -117,6 +117,16 @@
 		this.nextShape.fillStyle="#232020";
 		this.tetris.fillStyle="#ece5e5";
 
+
+
+		
+		document.getElementById("scoreShow").innerHTML = this.scoreStatus.curScore;
+		
+		document.getElementById("levelShow").innerHTML = this.scoreStatus.curLevel;
+		
+		document.getElementById("linesShow").innerHTML = this.scoreStatus.curLines;
+		document.getElementById("bestScore").innerHTML = localStorage.best;
+
 		
 	  },
 	  
@@ -325,13 +335,6 @@
 					}
 				}
 
-				document.getElementById("score").value=0;
-				document.getElementById("scoreShow").innerHTML = document.getElementById("score").value;
-				document.getElementById("level").value=1;
-				document.getElementById("levelShow").innerHTML = document.getElementById("level").value;
-				document.getElementById("lines").value=0;
-				document.getElementById("linesShow").innerHTML = document.getElementById("lines").value;
-				document.getElementById("bestScore").innerHTML = localStorage.best;
 				that.start(); 
 			}	               			  
 		 };
@@ -343,10 +346,12 @@
 		document.getElementById("pause").onclick = function(e){
 			if(that.startStatus){
 				if(!that.pauseStatus&&that.timerId){
-					that.pauseStatus=true;					
+					that.pauseStatus=true;		
+					document.getElementById("pause").innerHTML="continue";			
 					window.clearInterval(that.timerId);
 				}else if(that.pauseStatus){
 					that.pauseStatus=false;
+					document.getElementById("pause").innerHTML="pause";
 					that.timerId=window.setInterval(that.dropHandler.bind(that),that.currentBlock.speed);
 				}
 			}
@@ -465,14 +470,58 @@
 			
 			//计算并显示总得分
 
-			document.getElementById("lines").value = parseInt(document.getElementById("lines").value) + lines;
-			
-			document.getElementById("score").value = parseInt(document.getElementById("score").value) + returnScore;
+			this.scoreStatus.curLines  = this.scoreStatus.curLines + lines;
 
-			document.getElementById("linesShow").innerHTML = document.getElementById("lines").value;
+			this.scoreStatus.curScore = this.scoreStatus.curScore + returnScore;
 
-			document.getElementById("scoreShow").innerHTML = document.getElementById("score").value;
-			
+			document.getElementById("linesShow").innerHTML = this.scoreStatus.curLines
+
+			document.getElementById("scoreShow").innerHTML = this.scoreStatus.curScore;
+
+			if(parseInt(localStorage.best)< this.scoreStatus.curScore){
+				this.scoreStatus.best = localStorage.best = this.scoreStatus.curScore;
+				document.getElementById("bestScore").innerHTML = this.scoreStatus.best;
+			}
+
+			var newlines = this.scoreStatus.curLines;
+			if(newlines>20){				
+				this.scoreStatus.curLevel =2;	
+
+			}
+
+			if(newlines>50){
+				this.scoreStatus.curLevel =3;				
+			}
+
+			if(newlines>80){
+				this.scoreStatus.curLevel =4;
+			}
+
+			if(newlines>110){
+				this.scoreStatus.curLevel =5;
+			}
+			if(newlines>140){
+				this.scoreStatus.curLevel =6;
+
+			}
+			if(newlines>170){
+				this.scoreStatus.curLevel =7;
+
+			}
+			if(newlines>200){
+				this.scoreStatus.curLevel =8;
+
+			}
+			if(newlines>230){
+				this.scoreStatus.curLevel =9;
+
+			}
+			if(newlines>300){
+				this.scoreStatus.curLevel =10;
+
+			}
+			document.getElementById("levelShow").innerHTML = this.scoreStatus.curLevel;
+			this.currentBlock.speed = this.scoreStatus.levels[this.scoreStatus.curLevel];
 	  },
 	
 	
