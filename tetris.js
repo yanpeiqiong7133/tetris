@@ -1,9 +1,11 @@
 /**
 	 *	定义全局常量
 	 */
-    CELLWIDTH=25;
-	CELLCOUNT_x=10;
-	CELLCOUNT_y=18;
+    /*const CELLWIDTH=25;
+	const CELLCOUNT_x=10;
+	const CELLCOUNT_y=18;*/
+	const [CELLWIDTH, CELLCOUNT_x, CELLCOUNT_y] = [25, 10, 18];
+	const [KEY_UP, KEY_LEFT, KEY_RIGHT, KEY_DOWN] = [38, 37, 39, 40];
 
 	if(!localStorage.best){
 		localStorage.best="0";
@@ -105,6 +107,10 @@
 		document.getElementById("message").style.width = this.width + "px";
 		document.getElementById("message").style.height = this.height +"px";
 
+		//console.log("map height:"+document.getElementById("map").height)
+		document.getElementById("cover").style.width = this.width + "px";
+		document.getElementById("cover").style.height = this.height +"px";
+
 		document.getElementById("tetris").width = this.width;
 		document.getElementById("tetris").height = this.height;
 
@@ -114,21 +120,17 @@
 		document.getElementsByClassName("nextShape")[0].style.height = this.cellWidth*5;
 
 
-		this.nextShape.fillStyle="#232020";
-		this.tetris.fillStyle="#ece5e5";
+		this.nextShape.fillStyle = "#232020";
+		this.tetris.fillStyle = "#ece5e5";
 
+		this.initScore();
 
-
-		
-		document.getElementById("scoreShow").innerHTML = this.scoreStatus.curScore;
-		
-		document.getElementById("levelShow").innerHTML = this.scoreStatus.curLevel;
-		
-		document.getElementById("linesShow").innerHTML = this.scoreStatus.curLines;
-		document.getElementById("bestScore").innerHTML = localStorage.best;
+		//隐藏或显示提示面板
+		this.toggleMessage(0);
 
 		
 	  },
+
 	  
 	  
 	  /**
@@ -295,30 +297,55 @@
 
 			var event = e || window.event;
 			//console.log(event.keyCode);
-			if(event.keyCode==38){//按下up键，旋转图形
+			if(event.keyCode == KEY_UP){//按下up键，旋转图形
 				that.checkArrange("rotate");
-			}else if(event.keyCode==37){//按下left键，图形左移
+			}else if(event.keyCode == KEY_LEFT){//按下left键，图形左移
 				that.checkArrange("left");
-			}else if(event.keyCode==39){//按下right键，图形右移
+			}else if(event.keyCode == KEY_RIGHT){//按下right键，图形右移
 				that.checkArrange("right");
-			}else if(event.keyCode==40){//按下down键，加速下落
+			}else if(event.keyCode == KEY_DOWN){//按下down键，加速下落
 				while (that.checkArrange("down") == true);
 			}
 		
 		};
 
 	
-		/*
+		this.startEvent();
+		
+		
+		//游戏级别选择处理
+		// document.getElementById("gameLevel").onchange = function(){
+		// 	var levellist = document.getElementById("gameLevel");
+		// 	var selectIndex = levellist.selectedIndex;
+
+		// 	that.scoreStatus.curLevel= document.getElementById("gameLevel").options[selectIndex].value;;
+		// 	document.getElementById("level").value = that.scoreStatus.curLevel;
+			
+		// 	that.currentBlock.speed=that.scoreStatus.levels[that.scoreStatus.curLevel];
+		// }
+
+	  },
+
+
+	  startEvent:function(){
+	  	/*
 			开始点击事件处理
 		*/
-		document.getElementById("start").onclick = function(e){
+		var that = this;
+		document.querySelector(".start").onclick = function(e){
 			//console.log("click")
 			if(that.startStatus==false){
-				console.log("restart")
+				console.log("restart");
+
+				that.initScore();
 				that.startStatus=true;
-				document.getElementById("start").className="disabled";
-				document.querySelector("#message").style.display="none";
+				//document.getElementById("start").className="disabled";
+				//document.querySelector("#message").style.display="none";
 				//that.tetris.clearRect(0,0,this.width,this.height);
+				document.querySelector('#start > i').className = 'fa fa-pause';
+				document.getElementById('start').className = 'pause';
+				that.pauseEvent();
+				that.toggleMessage(0);
 				for(var i=0;i<that.cellCount_x;i++){
 					//this.tetris.translate(this.ox,this.ox);
 					for(var j=0;j<that.cellCount_y;j++){
@@ -339,37 +366,42 @@
 			}	               			  
 		 };
 
-		
-		/*
+	  },
+
+	  pauseEvent : function(){
+	  	/*
 		 * 暂停按钮点击事件处理
 		 */
-		document.getElementById("pause").onclick = function(e){
+		var that = this;
+		document.querySelector(".pause").onclick = function(e){
+			console.log('pause click')
 			if(that.startStatus){
 				if(!that.pauseStatus&&that.timerId){
 					that.pauseStatus=true;		
-					document.getElementById("pause").innerHTML="continue";			
+					//document.getElementById("pause").innerHTML="continue";
+					document.querySelector('#start > i').className = 'fa fa-play';			
 					window.clearInterval(that.timerId);
 				}else if(that.pauseStatus){
 					that.pauseStatus=false;
-					document.getElementById("pause").innerHTML="pause";
+					//document.getElementById("pause").innerHTML="pause";
+					document.querySelector('#start > i').className = 'fa fa-pause';
 					that.timerId=window.setInterval(that.dropHandler.bind(that),that.currentBlock.speed);
 				}
 			}
 			
 		 };
+	  },
 
+	  initScore:function(){
+	  	this.scoreStatus.curScore = 0;
+	  	this.scoreStatus.curLevel = 1;
+	  	this.scoreStatus.curLines = 0;
+	  	document.getElementById("scoreShow").innerHTML = this.scoreStatus.curScore;
 		
-		//游戏级别选择处理
-		// document.getElementById("gameLevel").onchange = function(){
-		// 	var levellist = document.getElementById("gameLevel");
-		// 	var selectIndex = levellist.selectedIndex;
-
-		// 	that.scoreStatus.curLevel= document.getElementById("gameLevel").options[selectIndex].value;;
-		// 	document.getElementById("level").value = that.scoreStatus.curLevel;
-			
-		// 	that.currentBlock.speed=that.scoreStatus.levels[that.scoreStatus.curLevel];
-		// }
-
+		document.getElementById("levelShow").innerHTML = this.scoreStatus.curLevel;
+		
+		document.getElementById("linesShow").innerHTML = this.scoreStatus.curLines;
+		document.getElementById("bestScore").innerHTML = localStorage.best;
 	  },
 		
 		
@@ -377,6 +409,9 @@
 	   *游戏开始
 	   */
 	  start:function(){
+
+	  		//this.initScore();
+
 			//变量changed用于表示方块是否落定（false表示落定）
 			this.changed=true;
 			
@@ -434,8 +469,11 @@
 					this.message.textBaseline="middle";
 					this.message.fillText("The END!",120,180);*/
 					//alert("游戏结束");
-					document.querySelector("#message").style.display="inline";
-					document.querySelector(".disabled").className="available";
+					//document.querySelector("#message").style.display="inline";
+					this.toggleMessage(1);
+					document.querySelector("#start").className = "start";
+					document.querySelector("#start > i").className = "fa fa-play";
+					this.startEvent();
 				}else{
 					this.start();
 				}	
@@ -811,10 +849,25 @@
 			}
 			canvas.closePath();
 	  
-	  }
+	  },
+
+	  /**
+	   * 隐藏或显示提示信息面板
+	   *
+	   */
+	   toggleMessage:function(state){
+	   		
+	   		document.getElementById("message").style.opacity = state;
+	   		document.getElementById("cover").style.opacity = state;
+	   		if(state){
+	   			document.getElementById("cover").style.opacity = 0.4;
+	   		}
+	   		
+	   }
 	  	  
    
  };
+	   
 
 	
 	

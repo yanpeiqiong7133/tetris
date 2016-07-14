@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html style="height:99%;">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Tetris</title>
@@ -14,24 +14,12 @@
 
 </head>
 
-<body>
+<body style="height:99%;">
 
-<div class="game">
+<div class="game clearfix">
 	<div class="tool">
-		<!-- level：<select id="gameLevel">
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option value="5">5</option>
-			<option value="6">6</option>
-			<option value="7">7</option>
-			<option value="8">8</option>
-			<option value="9">9</option>
-			<option value="10">10</option>
-		</select> -->
-		<a id="start" href="#" iconCls="icon-reload" class="available">start</a>
-		<a id="pause" href="#" iconCls="icon-reload">pause</a>
+		<a id="start" href="#" class="start"><i class="fa fa-play"></i></a>
+		<!-- <a id="pause" href="#" iconCls="icon-reload"><i class="fa fa-pause"></i></a> -->
 	</div>
 
 	<div id="main_container">
@@ -40,6 +28,8 @@
 			<canvas id="map"> 你的浏览器不支持 &lt;canvas&gt;标签，请使用 Chrome 浏览器 或者 FireFox 浏览器</canvas> 
 			<!-- <canvas id="message"> 你的浏览器不支持 &lt;canvas&gt;标签，请使用 Chrome 浏览器 或者 FireFox 浏览器 </canvas> -->
 			<canvas id="tetris"> 你的浏览器不支持 &lt;canvas&gt;标签，请使用 Chrome 浏览器 或者 FireFox 浏览器 </canvas>
+			<div id="message"><span style="display:table-cell;vertical-align:middle;">GAME OVER !</span></div>
+			<div id="cover"></div>
 		</div>
 	</div>
 	
@@ -68,9 +58,6 @@
 			</div>
 		
 	</div>
-
-
-	<div id="message">GAME OVER !</div>
 </div>
 <script type="text/javascript" src="tetris.js"></script>
 </body>
